@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Word Search Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(12, 30px);
+      justify-content: center;
+      gap: 2px;
+      margin: 20px auto;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background: #fff;
+      border: 1px solid #ccc;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cell.selected {
+      background-color: #add8e6;
+    }
+    .cell.correct {
+      background-color: #90ee90;
+    }
+    #word-list {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    #score {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-weight: bold;
+      background: #90ee90;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Word Search - Wellness Edition</h1>
+  <div id="grid"></div>
+  <div id="word-list">Find these words: <span id="words"></span></div>
+  <button onclick="submitWord()">Submit</button>
+  <div id="score">Score: <span id="score-value">0</span></div>
+
+  <script>
+    const allWords = [
+      "health", "habit", "diet", "hygiene", "peace",
+      "mind", "calm", "soul", "nature", "spiritual",
+      "relief", "heal", "meditation", "wellness", "therapy"
+    ];
+    const size = 12;
+    const grid = document.getElementById("grid");
+    const selectedCells = [];
+    let score = 0;
+
+    // Shuffle and select random 5 words
+    const selectedWords = allWords.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+    function randomLetter() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      return letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    function placeWords(gridArray) {
+      selectedWords.forEach(word => {
+        let placed = false;
+        while (!placed) {
+          const dir = Math.random() > 0.5 ? "H" : "V";
+          let row = Math.floor(Math.random() * size);
+          let col = Math.floor(Math.random() * size);
+          if (dir === "H" && col + word.length <= size) {
+            let canPlace = true;
+            for (let i = 0; i < word.length; i++) {
+              if (gridArray[row][col + i] !== "") canPlace = false;
+            }
+            if (canPlace) {
+              for (let i = 0; i < word.length; i++) {
+                gridArray[row][col + i] = word[i].toUpperCase();
+              }
+              placed = true;
+            }
+          } else if (dir === "V" && row + word.length <= size) {
+            let canPlace = true;
+            for (let i = 0; i < word.length; i++) {
+              if (gridArray[row + i][col] !== "") canPlace = false;
+            }
+            if (canPlace) {
+              for (let i = 0; i < word.length; i++) {
+                gridArray[row + i][col] = word[i].toUpperCase();
+              }
+              placed = true;
+            }
+          }
+        }
+      });
+    }
+
+    function createGrid() {
+      const gridArray = Array.from({ length: size }, () => Array(size).fill(""));
+      placeWords(gridArray);
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell");
+          const char = gridArray[r][c] || randomLetter();
+          cell.textContent = char;
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          grid.appendChild(cell);
+        }
+      }
+      document.getElementById("words").textContent = selectedWords.join(", ");
+    }
+
+    function getWordFromSelection() {
+      return selectedCells.map(cell => cell.textContent).join("").toLowerCase();
+    }
+
+    function submitWord() {
+      const formedWord = getWordFromSelection();
+      if (selectedWords.includes(formedWord)) {
+        selectedCells.forEach(c => {
+          c.classList.remove("selected");
+          c.classList.add("correct");
+        });
+        score += 10;
+        document.getElementById("score-value").textContent = score;
+        selectedWords.splice(selectedWords.indexOf(formedWord), 1);
+        document.getElementById("words").textContent = selectedWords.join(", ");
+      } else {
+        selectedCells.forEach(c => c.classList.remove("selected"));
+      }
+      selectedCells.length = 0;
+    }
+
+    function handleSelection(cell) {
+      if (cell.classList.contains("correct")) return;
+
+      cell.classList.toggle("selected");
+      if (selectedCells.includes(cell)) {
+        selectedCells.splice(selectedCells.indexOf(cell), 1);
+      } else {
+        selectedCells.push(cell);
+      }
+    }
+
+    createGrid();
+
+    document.addEventListener("click", function (e) {
+      if (e.target.classList.contains("cell")) {
+        handleSelection(e.target);
+      }
+    });
+  </script>
+</body>
+</html>

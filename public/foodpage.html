@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know Your Food!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #f5f1e7;
+            text-align: center;
+            padding: 20px;
+            padding-top: 70px;
+        }
+        .header-img {
+            width: 100%;
+            height: 200px;
+            background: url('https://img.freepik.com/free-vector/hand-drawn-food-doodles-background_23-2149130950.jpg') center/cover no-repeat;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: black;
+        }
+        .subtext {
+            font-size: 1.2rem;
+            margin: 10px 0 20px;
+        }
+        .start-btn {
+            background: #d4a373;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .start-btn:hover {
+            background: #b97b50;
+        }
+        .content {
+            display: none;
+            margin-top: 20px;
+        }
+        .warning-popup {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            z-index: 100;
+        }
+        .warning-popup button {
+            background: #d17b63;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 1rem;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .warning-popup button:hover {
+            background: #b85c38;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #d4a373;
+            color: white;
+        }
+        .fun-fact {
+            font-size: 1.1rem;
+            color: #5c5c5c;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        .meal-schedule {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .meal-schedule h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d17b63;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .meal-schedule ul {
+            text-align: left;
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .meal-schedule ul li {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .meal-schedule ul li strong {
+            font-size: 1.5rem;
+            color: #b85c38;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(100, 75, 50, 0.2); /* subtle brown glassy effect */
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 14px 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #333; /* dark text for visibility */
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 10px 18px;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar a:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="mainpage.html">Home</a>
+        <a href="meditation.html">Meditation</a>
+        <a href="universe.html">Stress Relief</a>
+        <a href="exercise.html">Exercise</a>
+        <a href="mindgames.html">Mind Games</a>
+        <a href="motivational.html">Motivational Thoughts</a>
+      </div>
+      
+    <div class="header-img"></div>
+    <h1>Know Your Food!</h1>
+    <p class="subtext">Are you ready to transform your meals? 🍽</p>
+    <button class="start-btn" onclick="showWarning()">Click to Start</button>
+
+    <div class="warning-popup" id="warningPopup">
+        <p>⚠ The calorie values are approximate. Please consult a dietitian for personalized advice.</p>
+        <button onclick="closeWarning()">I Understand</button>
+    </div>
+
+    <div class="content" id="content">
+        <table>
+            <tr>
+                <th>Food Item 🍛</th>
+                <th>Calories (Per 100g) 🔥</th>
+                <th>Better Replacement ✅</th>
+                <th>Calories (Replacement) 🔥</th>
+            </tr>
+            <tr><td>🍚 White Rice</td><td>130 kcal</td><td>🍘 Brown Rice</td><td>112 kcal</td></tr>
+            <tr><td>🥪 Chapati</td><td>180 kcal</td><td>🌾 Multigrain Roti</td><td>150 kcal</td></tr>
+            <tr><td>🧀 Paneer</td><td>265 kcal</td><td>🍶 Tofu</td><td>76 kcal</td></tr>
+            <tr><td>🥔 Potato</td><td>77 kcal</td><td>🍠 Sweet Potato</td><td>86 kcal</td></tr>
+            <tr><td>🥛 Whole Milk</td><td>60 kcal</td><td>🌰 Almond Milk</td><td>30 kcal</td></tr>
+            <tr><td>🍬 Sugar</td><td>387 kcal</td><td>🍯 Honey</td><td>304 kcal</td></tr>
+        </table>
+
+        <div class="fun-fact" id="funFact"></div>
+
+        <!-- Daily Meal Schedule -->
+        <div class="meal-schedule">
+            <h2>Daily Meal Schedule 🍽</h2>
+            <p>Follow this schedule for a balanced and healthy diet:</p>
+            <ul>
+                <li>
+                    <strong>🍳 Breakfast (7:00 AM - 9:00 AM):</strong>
+                    Start your day with a bowl of oatmeal, fresh fruits, and a glass of almond milk.
+                </li>
+                <li>
+                    <strong>🥜 Mid-Morning Snack (10:30 AM - 11:30 AM):</strong>
+                    Have a handful of nuts (almonds or walnuts) and a cup of green tea.
+                </li>
+                <li>
+                    <strong>🥗 Lunch (12:30 PM - 2:00 PM):</strong>
+                    Begin with a fresh salad 🥗, followed by multigrain roti, brown rice, and a serving of tofu or grilled chicken.
+                </li>
+                <li>
+                    <strong>🍓 Afternoon Snack (4:00 PM - 5:00 PM):</strong>
+                    Enjoy a fruit smoothie or a bowl of yogurt with chia seeds.
+                </li>
+                <li>
+                    <strong>🍲 Dinner (7:00 PM - 8:30 PM):</strong>
+                    Start with soup 🍲, followed by steamed vegetables, sweet potato, and a light protein like fish or lentils.
+                </li>
+                <li>
+                    <strong>🌙 Post-Dinner (Optional, 9:00 PM):</strong>
+                    A glass of warm almond milk with a pinch of turmeric for better sleep.
+                </li>
+            </ul>
+            <p><strong>Tip:</strong> Always start your meal with lighter items like salads or soups to aid digestion and control portion sizes. 🥗</p>
+        </div>
+    </div>
+
+    <script>
+        function showWarning() {
+            document.getElementById("warningPopup").style.display = "block";
+        }
+
+        function closeWarning() {
+            document.getElementById("warningPopup").style.display = "none";
+            document.getElementById("content").style.display = "block";
+        }
+
+        // Fun Facts Array
+        const funFacts = [
+        "🥑 Did you know? Jaggery boosts immunity and aids digestion! 💪",
+        "🍎 An apple a day keeps the doctor away! Apples are rich in fiber and antioxidants.",
+        "🥦 Broccoli is a superfood packed with vitamins and minerals. Great for your bones! 🦴",
+        "🍋 Lemons are high in vitamin C and help boost your immune system! 🍋",
+        "🍓 Strawberries are low in calories and high in antioxidants. Perfect for a healthy snack! 🍓",
+        "🌰 Almonds are a great source of healthy fats and protein. Perfect for brain health! 🧠",
+        "🥕 Carrots are rich in beta-carotene, which is great for your eyesight! 👀",
+        "🍌 Bananas are a great source of potassium and help maintain healthy blood pressure. 💛",
+        "🍇 Grapes contain powerful antioxidants that support heart health. ❤",
+        "🌽 Corn is a good source of fiber and helps with digestion. 🌽",
+        "🍍 Pineapples contain bromelain, which helps reduce inflammation and improve digestion. 🍍",
+        "🥬 Spinach is packed with iron and helps boost energy levels. 💪",
+        "🍉 Watermelon is hydrating and contains vitamins A and C. Perfect for summer! 🌞",
+        "🥜 Peanuts are a great source of protein and healthy fats. Perfect for a quick snack! 🥜",
+        "🍒 Cherries are rich in antioxidants and help reduce inflammation. 🍒",
+        "🥥 Coconut water is a natural electrolyte drink that keeps you hydrated. 🥥",
+        "🍠 Sweet potatoes are rich in fiber and beta-carotene, great for your skin! 🌟",
+        "🍫 Dark chocolate (in moderation) is rich in antioxidants and good for your heart. ❤",
+        "🧄 Garlic boosts immunity and helps lower blood pressure. 🧄",
+        "🍵 Green tea is loaded with antioxidants and helps improve brain function. 🧠"
+    ];
+
+        // Display a Random Fun Fact
+        function displayRandomFunFact() {
+            const randomIndex = Math.floor(Math.random() * funFacts.length);
+            document.getElementById("funFact").textContent = funFacts[randomIndex];
+        }
+
+        // Call the function on page load
+        window.onload = function () {
+            displayRandomFunFact();
+        };
+    </script>
+
+</body>
+</html>
+

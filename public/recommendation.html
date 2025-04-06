@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personalized Recommendations | Heal Harbour</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-image: linear-gradient(111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-top: 20px;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .recommendation-form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    .recommendation-form input,
+    .recommendation-form select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .recommendation-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff7f50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .recommendation-form button:hover {
+      background-color: #ff5e2e;
+    }
+
+    .recommendation-box {
+      background-color: #ffffffd0;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      max-width: 600px;
+      width: 90%;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .recommendation-box strong {
+      font-size: 1.2rem;
+      color: #222;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .back-btn a {
+      text-decoration: none;
+      color: white;
+      background-color: #333;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .back-btn a:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Personalized Health Recommendations</h1>
+
+  <div class="recommendation-form">
+    <input type="number" id="userWeight" placeholder="Enter Weight (kg)" required>
+    <input type="number" id="userHeight" placeholder="Enter Height (cm)" required>
+    <input type="number" id="userAge" placeholder="Enter Age" required>
+    
+    <select id="userGender" required>
+      <option value="" disabled selected>Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <select id="userActivity" required>
+      <option value="" disabled selected>Select Activity Level</option>
+      <option value="sedentary">Sedentary</option>
+      <option value="light">Light Activity</option>
+      <option value="moderate">Moderate Activity</option>
+      <option value="active">Very Active</option>
+    </select>
+
+    <button onclick="generateRecommendations()">Generate Recommendation</button>
+  </div>
+
+  <div id="recommendationBox" class="recommendation-box" style="display:none;"></div>
+
+  <div class="back-btn">
+    <a href="index.html">← Back to Home</a>
+  </div>
+
+  <script>
+    function generateRecommendations() {
+      const heightCm = parseFloat(document.getElementById("userHeight").value);
+      const weightKg = parseFloat(document.getElementById("userWeight").value);
+      const output = document.getElementById("recommendationBox");
+
+      if (!heightCm || !weightKg) {
+        output.style.display = "block";
+        output.innerHTML = "⚠️ Please enter both height and weight.";
+        return;
+      }
+
+      const heightM = heightCm / 100;
+      const bmi = weightKg / (heightM * heightM);
+      let recommendation = `<strong>Your BMI is: ${bmi.toFixed(2)}</strong><br><br>`;
+
+      if (bmi < 18.5) {
+        recommendation += `
+          <b>Category:</b> Underweight<br>
+          🥘 Focus on high-protein & calorie-rich meals<br>
+          🏋️‍♂️ Strength training: 4 days/week<br>
+          💤 Sleep 8 hrs for recovery<br>
+          🧘 Light yoga or journaling to reduce stress<br>
+        `;
+      } else if (bmi >= 18.5 && bmi <= 24.9) {
+        recommendation += `
+          <b>Category:</b> Normal weight<br>
+          🥗 Maintain a balanced vegetarian diet<br>
+          🚶‍♀️ Daily walk/light cardio: 30 mins<br>
+          🧘 Meditation & breathing exercises<br>
+          💤 Ensure 7-8 hrs sleep and hydration<br>
+        `;
+      } else if (bmi >= 25 && bmi <= 29.9) {
+        recommendation += `
+          <b>Category:</b> Overweight<br>
+          🥦 Low-carb, high-fiber diet (salads, sprouts)<br>
+          🏃‍♂️ Cardio + strength (20 + 20 mins): 5 days/week<br>
+          🚫 Limit fried/sugary foods<br>
+          💤 Sleep 7-8 hrs to support metabolism<br>
+        `;
+      } else {
+        recommendation += `
+          <b>Category:</b> Obese<br>
+          🥗 Low-calorie, low-carb vegetarian meals<br>
+          🏃‍♀️ Daily cardio: 40 mins + resistance bands<br>
+          🧘 Deep breathing & stress management<br>
+          📉 Track progress and stay consistent<br>
+        `;
+      }
+
+      output.style.display = "block";
+      output.innerHTML = recommendation;
+    }
+  </script>
+</body>
+</html>
+

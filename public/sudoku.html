@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #sudoku-board {
+            display: grid;
+            grid-template-columns: repeat(9, 50px);
+            grid-template-rows: repeat(9, 50px);
+            gap: 2px;
+            margin: 20px auto;
+            width: 460px;
+        }
+        input {
+            width: 48px;
+            height: 48px;
+            text-align: center;
+            font-size: 18px;
+            border: 1px solid black;
+        }
+        input:focus {
+            outline: 2px solid blue;
+        }
+        .disabled {
+            background-color: lightgray;
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sudoku Game</h1>
+    <div id="sudoku-board"></div>
+    <button onclick="checkSudoku()">Check Solution</button>
+    <p id="result"></p>
+
+    <script>
+        function deepCopy(arr) {
+            return JSON.parse(JSON.stringify(arr));
+        }
+
+        function transpose(board) {
+            for (let i = 0; i < 9; i++) {
+                for (let j = i; j < 9; j++) {
+                    let temp = board[i][j];
+                    board[i][j] = board[j][i];
+                    board[j][i] = temp;
+                }
+            }
+        }
+
+        function swapRowsInBand(board, band) {
+            const [a, b] = getTwoDistinct(0, 2).map(i => i + band * 3);
+            [board[a], board[b]] = [board[b], board[a]];
+        }
+
+        function swapColumnsInStack(board, stack) {
+            const [a, b] = getTwoDistinct(0, 2).map(i => i + stack * 3);
+            for (let i = 0; i < 9; i++) {
+                [board[i][a], board[i][b]] = [board[i][b], board[i][a]];
+            }
+        }
+
+        function getTwoDistinct(min, max) {
+            let a = Math.floor(Math.random() * (max - min + 1)) + min;
+            let b;
+            do {
+                b = Math.floor(Math.random() * (max - min + 1)) + min;
+            } while (b === a);
+            return [a, b];
+        }
+
+        function shuffleBoard(board) {
+            for (let i = 0; i < 5; i++) {
+                let band = Math.floor(Math.random() * 3);
+                swapRowsInBand(board, band);
+                let stack = Math.floor(Math.random() * 3);
+                swapColumnsInStack(board, stack);
+                if (Math.random() > 0.5) transpose(board);
+            }
+        }
+
+        function removeCells(board, count = 45) {
+            let removed = 0;
+            while (removed < count) {
+                let i = Math.floor(Math.random() * 9);
+                let j = Math.floor(Math.random() * 9);
+                if (board[i][j] !== 0) {
+                    board[i][j] = 0;
+                    removed++;
+                }
+            }
+        }
+
+        const baseSolution = [
+            [5, 3, 4, 6, 7, 8, 9, 1, 2],
+            [6, 7, 2, 1, 9, 5, 3, 4, 8],
+            [1, 9, 8, 3, 4, 2, 5, 6, 7],
+            [8, 5, 9, 7, 6, 1, 4, 2, 3],
+            [4, 2, 6, 8, 5, 3, 7, 9, 1],
+            [7, 1, 3, 9, 2, 4, 8, 5, 6],
+            [9, 6, 1, 5, 3, 7, 2, 8, 4],
+            [2, 8, 7, 4, 1, 9, 6, 3, 5],
+            [3, 4, 5, 2, 8, 6, 1, 7, 9]
+        ];
+
+        let solution = deepCopy(baseSolution);
+        shuffleBoard(solution);
+        let board = deepCopy(solution);
+        removeCells(board);
+
+        function createBoard() {
+            const boardDiv = document.getElementById("sudoku-board");
+            boardDiv.innerHTML = "";
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    let cell = document.createElement("input");
+                    cell.type = "text";
+                    cell.maxLength = "1";
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    if (board[i][j] !== 0) {
+                        cell.value = board[i][j];
+                        cell.disabled = true;
+                        cell.classList.add("disabled");
+                    }
+                    boardDiv.appendChild(cell);
+                }
+            }
+        }
+
+        function checkSudoku() {
+            let isCorrect = true;
+            let inputs = document.querySelectorAll("input");
+
+            inputs.forEach(input => {
+                let row = input.dataset.row;
+                let col = input.dataset.col;
+                let value = parseInt(input.value) || 0;
+                if (value !== solution[row][col]) {
+                    isCorrect = false;
+                }
+            });
+
+            document.getElementById("result").textContent = isCorrect ? "🎉 Yay! You Won! 🎉" : "❌ Incorrect! Try again.";
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>

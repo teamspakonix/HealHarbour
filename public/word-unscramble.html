@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Unscramble - Health Edition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FAF3E0;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #FFD3B6;
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            margin: auto;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .word {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        input, button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #ffb6b9;
+            cursor: pointer;
+        }
+        .timer {
+            font-size: 20px;
+            color: #ff6b6b;
+        }
+        .result {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #6A0572;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Unscramble - Health & Wellness</h1>
+        <p class="timer">Time Left: <span id="timer">30</span> seconds</p>
+        <p class="word" id="scrambled-word"></p>
+        <input type="text" id="user-input" placeholder="Your answer...">
+        <button onclick="checkAnswer()">Submit</button>
+        <p class="result" id="result"></p>
+    </div>
+
+    <script>
+        const wordList = [
+            "exercise", "nutrition", "meditation", "hydration", "lifestyle",
+            "wellbeing", "relaxation", "mindfulness", "resilience", "serotonin",
+            "dopamine", "antioxidant", "immunity", "detoxification", "homeostasis"
+        ];
+
+        // Shuffle function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Scramble word letters
+        function scramble(word) {
+            let chars = word.split('');
+            do {
+                for (let i = chars.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [chars[i], chars[j]] = [chars[j], chars[i]];
+                }
+            } while (chars.join('') === word); // Make sure it's actually scrambled
+            return chars.join('');
+        }
+
+        // Prepare shuffled word set
+        shuffleArray(wordList);
+        const words = wordList.map(word => ({ scrambled: scramble(word), correct: word }));
+
+        let currentIndex = 0;
+        let timeLeft = 30;
+        let timerInterval;
+
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById("timer").textContent = timeLeft;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById("timer").textContent = timeLeft;
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("result").textContent = "Time's up! The correct word was: " + words[currentIndex].correct;
+                    moveToNextWord();
+                }
+            }, 1000);
+        }
+
+        function showWord() {
+            document.getElementById("scrambled-word").textContent = words[currentIndex].scrambled;
+            document.getElementById("user-input").value = "";
+            document.getElementById("result").textContent = "";
+            startTimer();
+        }
+
+        function moveToNextWord() {
+            currentIndex++;
+            if (currentIndex < words.length) {
+                setTimeout(showWord, 2000);
+            } else {
+                document.getElementById("scrambled-word").textContent = "";
+                document.getElementById("result").textContent += " Game Over!";
+                clearInterval(timerInterval);
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("user-input").value.toLowerCase();
+            const correctAnswer = words[currentIndex].correct;
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").textContent = "Correct!";
+            } else {
+                document.getElementById("result").textContent = "Incorrect! The correct word was: " + correctAnswer;
+            }
+            clearInterval(timerInterval);
+            moveToNextWord();
+        }
+
+        showWord();
+    </script>
+</body>
+</html>

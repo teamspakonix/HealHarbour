@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditation Guide</title>
+    
+    <!-- Google Fonts: Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            height: 100vh;
+            color: white;
+        }
+
+        /* Background Video */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Breathing Circle */
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgb(255, 153, 153) 0%, rgba(255, 94, 77, 0.3) 80%);
+            animation: breathe 6s infinite ease-in-out, colorShift 6s infinite ease-in-out;
+        }
+
+        /* Breathing Animation */
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        /* Color Animation */
+        @keyframes colorShift {
+            0% { background: radial-gradient(circle, rgb(255, 182, 193) 0%, rgba(255, 165, 0, 0.3) 80%); }
+            50% { background: radial-gradient(circle, rgb(255, 105, 180) 0%, rgba(255, 69, 0, 0.3) 80%); }
+            100% { background: radial-gradient(circle, rgb(255, 69, 0) 0%, rgba(255, 140, 0, 0.3) 80%); }
+        }
+
+        /* Text Styling */
+        h2, p {
+            font-family: 'Playfair Display', serif;
+            color:#020001;
+            position: relative;
+            bottom: 70px;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            background-color: #ff6f61;
+            color: white;
+            border-radius: 5px;
+            position: relative;
+            bottom: -52px;
+        }
+
+        button:hover {
+            background-color: #e08a5b;
+            color:black;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Video -->
+    <video class="video-background" autoplay loop muted>
+        <source src="your-background-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <h2>Follow the Breathing Guide</h2>
+    <p>Inhale as the circle expands, exhale as it shrinks.</p>
+    <div class="breathing-circle"></div>
+
+    <!-- Meditation Guide Audio -->
+    <audio id="meditationAudio" loop>
+        <source src="meditation-guide.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Birds Background Audio -->
+    <audio id="birdsAudio" autoplay loop>
+        <source src="birds-chirping.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Inhale/Exhale Audio -->
+    <audio id="breatheAudio">
+        <source src="inhale-exhale.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Play/Pause Buttons -->
+    <button onclick="playAudio()">Play Guide</button>
+    <button onclick="pauseAudio()">Pause Guide</button>
+
+    <script>
+        const meditationAudio = document.getElementById("meditationAudio");
+        const birdsAudio = document.getElementById("birdsAudio");
+        const breatheAudio = document.getElementById("breatheAudio");
+
+        function playAudio() {
+            birdsAudio.pause();
+            meditationAudio.play();
+            breatheAudio.play();
+        }
+
+        function pauseAudio() {
+            meditationAudio.pause();
+            breatheAudio.pause();
+            birdsAudio.play();
+        }
+    </script>
+
+</body>
+</html>
+

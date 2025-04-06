@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Affirmation Cards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #f7cac9, #92a8d1);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: relative;
+            padding-top: 70px;
+        }
+        .message {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            position: absolute;
+            bottom: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: opacity 1s ease-in-out;
+        }
+        .card {
+            position: absolute;
+            width: 250px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            opacity: 0.9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: floatUp 5s ease-in-out forwards;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 14px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #000;
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="mainpage.html">Home</a>
+        <a href="meditation.html">Meditation</a>
+        <a href="universe.html">Stress Relief</a>
+        <a href="exercise.html">Exercise</a>
+        <a href="foodpage.html">Nutrition Corner</a>
+        <a href="mindgames.html">Mind Games</a>
+      </div>
+    <div class="message">Click anywhere on the screen to get a motivation quote!</div>
+
+    <script>
+        const quotes = [
+            "Believe in yourself and all that you are.",
+            "You are stronger than you think.",
+            "Every day is a new beginning.",
+            "Your potential is endless.",
+            "Stay positive, work hard, make it happen.",
+            "The best way to predict the future is to create it.",
+            "Difficult roads often lead to beautiful destinations.",
+            "Your only limit is your mind.",
+            "Start where you are. Use what you have. Do what you can.",
+            "Make today so awesome that yesterday gets jealous.",
+            "Small steps every day lead to big changes.",
+            "Don't stop until you're proud.",
+            "You are capable of amazing things.",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+            "Happiness is not something ready-made. It comes from your own actions.",
+            "Push yourself, because no one else is going to do it for you.",
+            "Dream big and dare to fail.",
+            "Doubt kills more dreams than failure ever will.",
+            "You don't have to be perfect to be amazing.",
+            "Turn your wounds into wisdom.",
+            "Everything you’ve ever wanted is on the other side of fear.",
+            "Be the energy you want to attract.",
+            "You are your only limit.",
+            "Whatever you do, do it well.",
+            "Act as if what you do makes a difference. It does.",
+            "Do something today that your future self will thank you for.",
+            "Believe you can and you're halfway there.",
+            "Be so good they can't ignore you.",
+            "Don't watch the clock; do what it does. Keep going.",
+            "Your speed doesn’t matter, forward is forward.",
+            "Sometimes later becomes never. Do it now.",
+            "Difficulties in life are intended to make us better, not bitter.",
+            "Your mind is a powerful thing. When you fill it with positive thoughts, your life will start to change.",
+            "Stay strong, stay positive, and never give up.",
+            "Everything happens for a reason. Keep pushing forward.",
+            "No one is you, and that is your superpower.",
+            "Mistakes are proof that you are trying.",
+            "You have to be at your strongest when you’re feeling at your weakest.",
+            "If it doesn’t challenge you, it won’t change you.",
+            "Trust the timing of your life.",
+            "It’s okay to not have everything figured out yet.",
+            "Take a deep breath. It’s just a bad day, not a bad life.",
+            "Great things never come from comfort zones.",
+            "Success is getting up one more time than you fall.",
+            "If you can dream it, you can do it.",
+            "Strength grows in the moments when you think you can’t go on but you keep going anyway.",
+            "A negative mind will never give you a positive life.",
+            "Stars can’t shine without darkness.",
+            "The struggle you’re in today is developing the strength you need for tomorrow."
+        ];
+
+        document.addEventListener("click", function(event) {
+            document.querySelector(".message").style.opacity = "0";
+            createCard(event.clientX, event.clientY);
+        });
+
+        function createCard(x, y) {
+            let card = document.createElement("div");
+            let colors = ["#ff6b6b", "#ffcc5c", "#ff6b81", "#4ecdc4", "#556270", "#ff7eb3", "#6a0572", "#9b59b6"];
+            
+            card.classList.add("card");
+            card.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            card.style.left = (x - 125) + "px";
+            card.style.top = (y - 50) + "px";
+            card.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+            
+            document.body.appendChild(card);
+            
+            setTimeout(() => { card.remove(); }, 5000);
+        }
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditation Guide</title>
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #E6F0E6, #D4E6F1);
+    color: #222;
+    text-align: center;
+    transition: background 1.5s ease-in-out;
+    padding-top:80px;
+}
+
+header {
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #2C3E50;
+}
+
+.hero {
+    padding: 80px 20px;
+    background: url('calm.jpg') no-repeat center/cover;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    position: relative;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.hero h1,
+.hero p,
+.hero .btn {
+    position: relative;
+    z-index: 2;
+}
+
+h1, h2 {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn {
+    padding: 14px 28px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #388E3C;
+}
+
+.content {
+    display: none;
+    padding: 20px;
+}
+
+.meditation-types, .background-sounds, .meditation-session {
+    display: none;
+    padding: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    width: 80%;
+}
+
+.meditation-box, .sound-box {
+    background: #FFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s;
+    font-size: 18px;
+    font-weight: 600;
+    color: #585a5e;
+    cursor: pointer;
+}
+
+.meditation-box:hover, .sound-box:hover {
+    transform: scale(1.08);
+}
+
+#meditationTitle {
+    font-size: 26px;
+    font-weight: bold;
+    color: #95999c;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#meditationDescription {
+    font-size: 18px;
+    color: #ada9a9;
+}
+
+#backgroundVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(40%);
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 14px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #2C3E50;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover {
+    background: rgba(44, 62, 80, 0.1);
+    color: #1A1A1A;
+}
+
+
+    </style>
+</head>
+<body>
+    <header>Meditation Guide</header>
+    <div class="navbar">
+        <a href="mainpage.html">Home</a>
+        <a href="universe.html">Stress Relief</a>
+        <a href="exercise.html">Exercise</a>
+        <a href="foodpage.html">Nutrition Corner</a>
+        <a href="mindgames.html">Mind Games</a>
+        <a href="motivational.html">Motivational Thoughts</a>
+      </div>
+    <video id="backgroundVideo" autoplay loop muted></video>
+    
+    <section class="hero">
+        <h1>Find Your Inner Peace</h1>
+        <p>A guided meditation journey for relaxation, focus, and mindfulness.</p>
+        <button class="btn" onclick="showMeditationOptions()">Start Meditating</button>
+    </section>
+    
+    <div class="content" id="contentSection">
+        <section class="meditation-types" id="meditationTypes">
+            <h2>Select a Meditation Type</h2>
+            <div class="meditation-box" onclick="selectMeditation('Mindfulness')">Mindfulness Meditation</div>
+            <div class="meditation-box" onclick="selectMeditation('Deep Breathing')">Deep Breathing</div>
+            <div class="meditation-box" onclick="selectMeditation('Sleep')">Sleep Meditation</div>
+            <div class="meditation-box" onclick="selectMeditation('Body Scan')">Body Scan Relaxation</div>
+            <div class="meditation-box" onclick="selectMeditation('Sound')">Sound Meditation</div>
+        </section>
+        
+        <section class="background-sounds" id="backgroundSounds">
+            <h2>Choose a Relaxing Sound</h2>
+            <div class="sound-box" onclick="selectSound('Ocean Waves')">Ocean Waves</div>
+            <div class="sound-box" onclick="selectSound('Forest')">Forest</div>
+            <div class="sound-box" onclick="selectSound('Bird Sounds')">Bird Sounds</div>
+            <div class="sound-box" onclick="selectSound('Waterfall')">Waterfall</div>
+        </section>
+        <audio id="backgroundAudio" loop></audio>
+        <section class="meditation-session" id="meditationSession">
+            <h2 id="meditationTitle"></h2>
+            <p id="meditationDescription"></p>
+        </section>
+    </div>
+    
+    <script>
+        function showMeditationOptions() {
+            document.getElementById("contentSection").style.display = "block";
+            document.querySelector(".hero").style.display = "none";
+            document.getElementById("meditationTypes").style.display = "block";
+        }
+
+        function selectMeditation(type) {
+            document.getElementById("meditationTypes").style.display = "none";
+            document.getElementById("backgroundSounds").style.display = "block";
+            document.getElementById("meditationSession").style.display = "none";
+            sessionStorage.setItem("meditationType", type);
+        }
+
+        function selectSound(sound) {
+            document.getElementById("backgroundSounds").style.display = "none";
+            document.getElementById("meditationSession").style.display = "block";
+            
+            let meditationType = sessionStorage.getItem("meditationType");
+            document.getElementById("meditationTitle").innerText = meditationType + " - " + sound;
+            document.getElementById("meditationDescription").innerText = "Enjoy your " + meditationType + " session with the calming sounds of " + sound + ".";
+            
+            let video = document.getElementById("backgroundVideo");
+            let soundVideos = {
+                "Ocean Waves": "ocean-waves.mp4",
+                "Forest": "forest.mp4",
+                "Bird Sounds": "birds.mp4",
+                "Waterfall": "waterfall.mp4"
+            };
+            
+            if (soundVideos[sound]) {
+                video.src = soundVideos[sound];
+                video.style.display = "block";
+            } else {
+                video.style.display = "none";
+            }
+            
+            let audio = document.getElementById("backgroundAudio");
+            let soundTracks = { "Ocean Waves": "ocean.mp3", "Forest": "forest.mp3", "Bird Sounds": "birds.mp3", "Waterfall": "waterfall.mp3" };
+            
+            if (soundTracks[sound]) {
+                audio.src = soundTracks[sound];
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+

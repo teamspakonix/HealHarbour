@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Bubble</title>
+    <link href="https://fonts.googleapis.com/css2?family=The+Girl+Next+Door&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            background: url('https://images.pexels.com/photos/9941418/pexels-photo-9941418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') center center no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 8px black;
+        }
+        .bubble {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #b3f3f1 40%, rgba(179, 243, 241, 0.6));
+            border-radius: 50%;
+            box-shadow: 0 0 40px 20px #5be9e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: black;
+            transition: transform 18s ease-out, opacity 18s ease-out;
+        }
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        input {
+            padding: 12px;
+            font-size: 1.4rem;
+            border-radius: 8px;
+            border: none;
+            width: 320px;
+            text-align: center;
+        }
+        button {
+            padding: 14px 28px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            box-shadow: 0px 0px 20px 8px rgba(255, 255, 255, 0.6);
+        }
+        .universe-btn {
+            background: linear-gradient(135deg, #84fab0, #8fd3f4);
+            box-shadow: 0 0 20px #84fab0;
+        }
+        .hidden {
+            display: none;
+        }
+        .shrink {
+            transform: scale(0);
+            opacity: 0;
+        }
+        .message-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .message {
+            font-size: 2rem;
+            font-weight: 600;
+            opacity: 0;
+            text-shadow: 2px 2px 5px black;
+            position: absolute;
+            transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+        }
+        .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      padding: 14px 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #e6f9ff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .navbar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(179, 243, 241, 0.6);
+    }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="mainpage.html">Home</a>
+        <a href="meditation.html">Meditation</a>
+        <a href="exercise.html">Exercise</a>
+        <a href="foodpage.html">Nutrition Corner</a>
+        <a href="mindgames.html">Mind Games</a>
+        <a href="motivational.html">Motivational Thoughts</a>
+      </div>
+    <audio id="burstSound" src="universe.mp3" preload="auto"></audio>
+
+    <h1 id="prompt">Put a stressful thought in the bubble</h1>
+
+    <div class="bubble-container">
+        <div class="bubble" id="bubble"></div>
+    </div>
+
+    <div class="input-box" id="inputSection">
+        <input type="text" id="stressInput" placeholder="Type here..." />
+        <button class="universe-btn" onclick="displayStress()">Done</button>
+    </div>
+
+    <button id="burstButton" class="universe-btn hidden" onclick="burstBubble()">Burst the Bubble</button>
+
+    <div class="message-container">
+        <p class="message hidden" style="top: 5%; left: 5%;">You're doing your best.</p>
+        <p class="message hidden" style="top: 15%; right: 5%;">Everything will settle soon.</p>
+        <p class="message hidden" style="bottom: 15%; left: 5%;">Inhale peace, exhale stress.</p>
+        <p class="message hidden" style="bottom: 5%; right: 5%;">You are enough.</p>
+        <p class="message hidden" style="top: 30%; left: 50%; transform: translateX(-50%);">Let the calm wash over you.</p>
+        <p class="message hidden" style="top: 50%; left: 10%;">Be still, the storm will pass.</p>
+        <p class="message hidden" style="top: 60%; right: 10%;">A deep breath resets everything.</p>
+        <p class="message hidden" style="bottom: 25%; left: 20%;">You are safe. You are calm.</p>
+        <p class="message hidden" style="bottom: 35%; right: 20%;">Peace begins with a smile.</p>
+        <p class="message hidden" style="top: 75%; left: 50%; transform: translateX(-50%);">Float free. You deserve peace.</p>
+    </div>
+
+    <script>
+        function displayStress() {
+            let input = document.getElementById("stressInput").value;
+            if (input.trim() === "") return;
+
+            document.getElementById("bubble").textContent = input;
+            document.getElementById("bubble").style.boxShadow = "0 0 40px 20px #5be9e6";
+
+            document.getElementById("inputSection").classList.add("hidden");
+            document.getElementById("prompt").classList.add("hidden");
+            document.getElementById("burstButton").classList.remove("hidden");
+        }
+
+        function burstBubble() {
+            let bubble = document.getElementById("bubble");
+            bubble.classList.add("shrink");
+
+            document.getElementById("burstSound").play();
+
+            let stopMessages = false;
+            showMessages(() => stopMessages);
+
+            setTimeout(() => {
+                bubble.textContent = "";
+                bubble.classList.remove("shrink");
+                document.getElementById("inputSection").classList.remove("hidden");
+                document.getElementById("prompt").classList.remove("hidden");
+                document.getElementById("burstButton").classList.add("hidden");
+                document.getElementById("stressInput").value = "";
+
+                let messages = document.querySelectorAll(".message");
+                messages.forEach(msg => {
+                    msg.style.opacity = "0";
+                    msg.style.transform = "translateY(20px)";
+                });
+                stopMessages = true;
+            }, 18000);
+        }
+
+        function showMessages(shouldStop) {
+            let messages = document.querySelectorAll(".message");
+            let index = 0;
+
+            function showNextMessage() {
+                if (shouldStop && shouldStop()) return;
+                if (index > 0) {
+                    messages[index - 1].style.opacity = "0";
+                    messages[index - 1].style.transform = "translateY(20px)";
+                }
+                if (index < messages.length) {
+                    messages[index].classList.remove("hidden");
+                    messages[index].style.opacity = "1";
+                    messages[index].style.transform = "translateY(0)";
+                    setTimeout(showNextMessage, 5000);
+                    index++;
+                }
+            }
+
+            showNextMessage();
+        }
+    </script>
+
+    <script src="//code.tidio.co/mddoapmcqomsunue59q3yzoknnpo19hr.js" async></script>
+</body>
+</html>
+
