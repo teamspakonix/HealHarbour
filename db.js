@@ -1,17 +1,50 @@
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
-dotenv.config();
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+// Define database path
+const dbPath = path.resolve(__dirname, 'healthtracker.db');
+
+// Create or open the SQLite database
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('❌ Could not connect to database', err);
+  } else {
+    console.log('✅ Connected to SQLite database');
+  }
 });
 
-db.connect(err => {
-    if (err) throw err;
-    console.log('✅ MySQL Database Connected');
+// Create tables if they don't exist
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      age INTEGER NOT NULL,
+      weight REAL NOT NULL,
+      height REAL NOT NULL,
+      gender TEXT NOT NULL,
+      activity_level TEXT NOT NULL,
+      password TEXT NOT NULL,
+      contact TEXT,
+      address TEXT
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS recommendations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      bmi REAL,
+      category TEXT,
+      daily_caloric_need INTEGER,
+      diet TEXT,
+      exercise TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `);
 });
 
 module.exports = db;
+

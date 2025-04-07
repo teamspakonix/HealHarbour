@@ -9,25 +9,26 @@ document.addEventListener("DOMContentLoaded", () => {
     signupForm.addEventListener("submit", async (e) => {
         e.preventDefault(); // ✅ Prevent default form submission
 
-        // ✅ Get form values safely
+        // ✅ Get form values
         const name = document.getElementById("name")?.value;
         const email = document.getElementById("email")?.value;
         const age = document.getElementById("age")?.value;
         const weight = document.getElementById("weight")?.value;
         const height = document.getElementById("height")?.value;
+        const gender = document.getElementById("gender")?.value; // ✅ New!
         const contact = document.getElementById("contact")?.value;
         const address = document.getElementById("address")?.value;
         const password = document.getElementById("password")?.value;
 
-        if (!name || !email || !password) {
-            alert("❌ Please fill all required fields!");
+        if (!name || !email || !password || !gender) {
+            alert("❌ Please fill all required fields including gender!");
             return;
         }
 
-        const userData = { name, email, age, weight, height, contact, address, password };
+        const userData = { name, email, age, weight, height, gender, contact, address, password };
 
         try {
-            const response = await fetch("http://localhost:5000/auth/signup", {
+            const response = await fetch("/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData)
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("✅ Signup successful! Redirecting to login...");
-                window.location.href = "index.html"; // ✅ Redirect to login page
+                window.location.href = "index.html";
             } else {
                 alert("❌ Signup failed: " + data.error);
             }
@@ -47,5 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
