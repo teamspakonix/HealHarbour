@@ -24,7 +24,6 @@ db.serialize(() => {
       weight REAL NOT NULL,
       height REAL NOT NULL,
       gender TEXT NOT NULL,
-      activity_level TEXT NOT NULL,
       password TEXT NOT NULL,
       contact TEXT,
       address TEXT
@@ -47,4 +46,5 @@ db.serialize(() => {
 });
 
 module.exports = db;
+
 
